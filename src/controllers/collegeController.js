@@ -108,7 +108,7 @@ const getAllIntern = async function (req, res) {
       
     if (internDetail.length === 0) {
       return res
-        .status(201)
+        .status(200)
         .send({
           status: true,
           data: {
