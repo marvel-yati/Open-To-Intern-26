@@ -7,14 +7,14 @@ const internController = require("../controllers/internController")
 
 // first api for college creation.
 
-router.post('/functionup/colleges', collegeController.createCollege);
+router.post('/colleges', collegeController.createCollege);
 
 // second api for intern creation.
 
-router.post('/functionup/interns', internController.internCreate);
+router.post('/interns', internController.internCreate);
 
-// third api for gt all interns data for each college.
+// third api for get all interns data for each college.
 
-router.get('/functionup/collegeDetails', collegeController.getAllIntern);
+router.get('/collegeDetails', collegeController.getAllIntern);
 
 module.exports = router;

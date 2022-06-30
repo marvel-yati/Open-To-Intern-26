@@ -1,5 +1,6 @@
 const collegeModel = require("../models/collegeModel");
 const internModel = require("../models/internModel");
+const validUrl=require("valid-url")
 
 // ==========================================================================================================================================>
 
@@ -17,6 +18,7 @@ const isValid = function (value) {
   const isValidRequestBody = function (requestBody) {
     return Object.keys(requestBody).length > 0;
   };
+  
   
 // ==========================================================================================================================================>
 
@@ -44,18 +46,17 @@ const createCollege = async function (req, res) {
             res.status(400).send({ status: false, message: 'logo link is required' })
             return
         }
-
-        // unique validation  >
+        if(!validUrl.isUri(requestBody.logoLink)){
+         return res.status(400).send({status:false,message:"not a valid logo "})
+        }
+        
 
         let uniqueNameCheck = await collegeModel.findOne({name:requestBody.name})
         if(uniqueNameCheck){
         return res.status(400).send({status:false,msg:"this name already exist"})
         }
 
-        // let uniqueFullNameCheck = await collegeModel.findOne({fullName:requestBody.fullName})
-        // if(uniqueFullNameCheck){
-        // return res.status(400).send({status:false,msg:"this full  name already exist"})
-        // }
+        
 
       // after validation create college
 
@@ -74,11 +75,11 @@ const getAllIntern = async function (req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   try {
     let collegeName = req.query.collegeName;
-
+   
     // request query params  validation
 
     if (!collegeName) {
-      return res.status(404).send({ status: false, msg: "give inputs" });
+      return res.status(400).send({ status: false, msg: "give inputs" });
     }
 
     // college validation
@@ -92,7 +93,7 @@ const getAllIntern = async function (req, res) {
         .status(404)
         .send({
           status: false,
-          msg: "college not found please provide valid college name",
+          message: "college not found please provide valid college name",
         });
     }
 
@@ -104,12 +105,13 @@ const getAllIntern = async function (req, res) {
     let internDetail = await internModel
       .find({ collegeId: collegeDetail._id, isDeleted: false })
       .select({ _id: 1, name: 1, email: 1, mobile: 1 });
+      
     if (internDetail.length === 0) {
       return res
         .status(201)
         .send({
           status: true,
-          msg: {
+          data: {
             ...collegeDetail1.toObject(),
             interns: "intern Details not present",
           },
