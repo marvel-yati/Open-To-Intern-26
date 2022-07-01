@@ -89,7 +89,7 @@ const getAllIntern = async function (req, res) {
       isDeleted: false,
     });
     if (!collegeDetail) {
-      res
+    return  res
         .status(404)
         .send({
           status: false,
