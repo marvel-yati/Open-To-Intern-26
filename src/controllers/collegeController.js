@@ -30,26 +30,29 @@ const createCollege = async function (req, res) {
 
         const requestBody = req.body;
         if (!isValidRequestBody(requestBody)) {
-            res.status(400).send({ status: false, message: 'Invalid request parameters. Please provide college details' })
-            return
+            return res.status(400).send({ status: false, message: 'Invalid request parameters. Please provide college details' })
+            
         }
 
         if (!isValid(requestBody.name)) {
-            res.status(400).send({ status: false, message: 'college name is required' })
-            return
+           return  res.status(400).send({ status: false, message: 'college name is required' })
+            
         }
         if (!isValid(requestBody.fullName)) {
-            res.status(400).send({ status: false, message: 'college full name is required' })
-            return
+           return  res.status(400).send({ status: false, message: 'college full name is required' })
+            
         }
         if (!isValid(requestBody.logoLink)) {
-            res.status(400).send({ status: false, message: 'logo link is required' })
-            return
+            return res.status(400).send({ status: false, message: 'logo link is required' })
+            
         }
         if(!validUrl.isUri(requestBody.logoLink)){
          return res.status(400).send({status:false,message:"not a valid logo "})
         }
-        
+        let checkLogo=/\.(gif|jpe?g|tiff?|png|webp|bmp)$/.test(requestBody.logoLink)
+        if(!checkLogo){
+          return res.status(400).send({status:false.valueOf,message:"not a valid logo"})
+        }
 
         let uniqueNameCheck = await collegeModel.findOne({name:requestBody.name})
         if(uniqueNameCheck){

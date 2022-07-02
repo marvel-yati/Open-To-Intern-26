@@ -28,29 +28,29 @@ const internCreate = async function (req, res) {
         // validation user entry or  req.body
 
         if (!isValidRequestBody(requestBody)) {
-            res.status(400).send({ status: false, message: 'Invalid request parameters. Please provide intern  details' })
+           return res.status(400).send({ status: false, message: 'Invalid request parameters. Please provide intern  details' })
             return
         }
 
         if (!isValid(requestBody.name)) {
-            res.status(400).send({ status: false, message: 'name is required' })
-            return
+           return res.status(400).send({ status: false, message: 'name is required' })
+            
         }
 
         if (!isValid(requestBody.email)) {
-            res.status(400).send({ status: false, message: 'email is required' })
-            return
+           return res.status(400).send({ status: false, message: 'email is required' })
+            
         }
 
         if (!isValid(requestBody.mobile)) {
-            res.status(400).send({ status: false, message: 'mobile number is required' })
-            return
+           return res.status(400).send({ status: false, message: 'mobile number is required' })
+            
         }
 
 
         if (!isValid(requestBody.collegeName)) {
-            res.status(400).send({ status: false, message: 'proper college name is required' })
-            return
+          return  res.status(400).send({ status: false, message: 'proper college name is required' })
+            
         }
         
         // email unique validation
@@ -97,15 +97,7 @@ const internCreate = async function (req, res) {
         const internCreate = await internModel.create(requestBody)
         res.status(201).send({ status: true, data: internCreate })
 
-        //  create data in intern second method
-        // const createIntern = {
-        //     name: req.body.name,
-        //     email: req.body.email,
-        //     mobile: req.body.mobile,
-        //     collegeId: collegeId._id
-        // }
-        // const internCreate = await internModel.create(createIntern)
-        // res.status(200).send({ status: true, data: internCreate })
+      
 
     } catch (error) {
         res.status(500).send({ status: false, message: error.message })
