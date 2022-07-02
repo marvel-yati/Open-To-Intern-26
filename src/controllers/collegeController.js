@@ -51,7 +51,7 @@ const createCollege = async function (req, res) {
         }
         let checkLogo=/\.(gif|jpe?g|tiff?|png|webp|bmp)$/.test(requestBody.logoLink)
         if(!checkLogo){
-          return res.status(400).send({status:false.valueOf,message:"not a valid logo"})
+          return res.status(400).send({status:false ,message:"not a valid logo"})
         }
 
         let uniqueNameCheck = await collegeModel.findOne({name:requestBody.name})
@@ -75,7 +75,7 @@ const createCollege = async function (req, res) {
 // ==========================================================================================================================================>
 
 const getAllIntern = async function (req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  
   try {
     let collegeName = req.query.collegeName;
    

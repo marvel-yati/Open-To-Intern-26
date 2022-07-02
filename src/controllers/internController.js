@@ -21,7 +21,7 @@ const isValidRequestBody = function (requestBody) {
 
 
 const internCreate = async function (req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*')
+  
     try {
         let requestBody = req.body
 
@@ -59,6 +59,11 @@ const internCreate = async function (req, res) {
             return res.status(400).send({ status: false, message: 'enter valid email' })
         }
 
+        let emailCheck = await internModel.findOne({ email: requestBody.email })
+        if (emailCheck) {
+            return res.status(400).send({ status: false, message: "this email already exist" })
+        }
+        
         // number unique validation
 
         let check1 = requestBody.mobile
@@ -73,15 +78,12 @@ const internCreate = async function (req, res) {
 
         const collegeId = await collegeModel.findOne({ name: requestBody.collegeName,isDeleted:false }).select({_id:1})
         if (!collegeId) {
-            return res.status(400).send({ status: false, message: 'college not found' })
+            return res.status(404).send({ status: false, message: 'college not found' })
 
         }
       
 
-        let emailCheck = await internModel.findOne({ email: requestBody.email })
-        if (emailCheck) {
-            return res.status(400).send({ status: false, message: "this email already exist" })
-        }
+        
 
         // number unique validation 
 
